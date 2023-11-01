@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Assignment5_login</string>
+    <string name="user_name_txt">User Name</string>
+    <string name="password_txt">Password</string>
+    <string name="continueButton_txt">Continue</string>
+    <string name="user_name_hint">Input User Name Here</string>
+    <string name="password_txt_hint">Input Password Here</string>
+    <string name="backButton_txt">Back</string>
+    <string name="summary_txt">Summary:</string>
+
+
+</resources>
