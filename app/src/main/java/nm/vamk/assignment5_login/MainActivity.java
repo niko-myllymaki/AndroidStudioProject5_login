@@ -2,10 +2,12 @@ package nm.vamk.assignment5_login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         userNameEditText = new EditText(this);
         userNameEditText.setLayoutParams(editTextViewLayoutParams);
         userNameEditText.setHint(R.string.user_name_hint);
+        userNameEditText.setOnTouchListener(onTouchListener);
         linearLayout.addView(userNameEditText);
 
         // Here we define the edit text for password
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         // Here we hide the content of the password field
         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         passwordEditText.setVisibility(View.GONE);
+        passwordEditText.setOnTouchListener(onTouchListener);
         linearLayout.addView(passwordEditText);
 
         //Continue Button
@@ -128,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
         this.addContentView(linearLayout, linearLayoutParams);
     }
 
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            userNameEditText.setBackgroundColor(0);
+            passwordEditText.setBackgroundColor(0);
+            return false;
+        }
+    };
+
     private OnClickListener buttonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -135,22 +148,32 @@ public class MainActivity extends AppCompatActivity {
 
             //Continue button clicked
             if(clickedButton.equals(continueButton)) {
-                if(userNameTextView.getVisibility() != View.GONE) {
-                    userNameTextView.setVisibility(View.GONE);
-                    userNameEditText.setVisibility(View.GONE);
-                    passwordTextView.setVisibility(View.VISIBLE);
-                    passwordEditText.setVisibility(View.VISIBLE);
-                    backButton.setVisibility(View.VISIBLE);
+                if(userNameEditText.getVisibility() == View.VISIBLE) {
+                    if(userNameEditText.getText().length() != 0) {
+                        userNameEditText.setBackgroundColor(0);
+                        userNameTextView.setVisibility(View.GONE);
+                        userNameEditText.setVisibility(View.GONE);
+                        passwordTextView.setVisibility(View.VISIBLE);
+                        passwordEditText.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.VISIBLE);
+                    } else {
+                        userNameEditText.setBackgroundColor(Color.rgb(255,0,0));
+                    }
                 } else {
-                    passwordTextView.setVisibility(View.GONE);
-                    passwordEditText.setVisibility(View.GONE);
-                    continueButton.setVisibility(View.GONE);
-                    summaryTitleTextView.setVisibility(View.VISIBLE);
-                    summaryDataTextView.setVisibility(View.VISIBLE);
-                    summaryDataTextView.setText(userNameEditText.getText().toString() + "\n"
-                            + passwordEditText.getText().toString() + "\n" + getCurrentDateTime());
-
+                    if(passwordEditText.getText().length() != 0) {
+                        passwordEditText.setBackgroundColor(0);
+                        passwordTextView.setVisibility(View.GONE);
+                        passwordEditText.setVisibility(View.GONE);
+                        continueButton.setVisibility(View.GONE);
+                        summaryTitleTextView.setVisibility(View.VISIBLE);
+                        summaryDataTextView.setVisibility(View.VISIBLE);
+                        summaryDataTextView.setText(userNameEditText.getText().toString() + "\n"
+                                + passwordEditText.getText().toString() + "\n" + getCurrentDateTime());
+                    } else {
+                        passwordEditText.setBackgroundColor(Color.rgb(255,0,0));
+                    }
                 }
+
             }
 
             //Back button clicked
@@ -164,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
                     summaryDataTextView.setVisibility(View.GONE);
                     continueButton.setVisibility(View.VISIBLE);
                 }
+                userNameEditText.setText("");
+                passwordEditText.setText("");
                 backButton.setVisibility(View.GONE);
                 userNameTextView.setVisibility(View.VISIBLE);
                 userNameEditText.setVisibility(View.VISIBLE);
